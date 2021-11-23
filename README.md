@@ -10,7 +10,7 @@ Simple Windows service based on Topshelf. It runs any valid windows command in s
 1. publish code to specified directory
 1. edit config file
 1. install windows service
-1. run
+1. run service
 
 ## Settings
 Setting are places in two JSON files: appsettings.json and appsettings.serilog.json. Serilog configuration is described on Serilog project site.
