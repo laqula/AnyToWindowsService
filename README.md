@@ -35,9 +35,9 @@ more info: https://serilog.net/
 more info: https://topshelf.readthedocs.io/en/latest/overview/commandline.html
 
 ## Command examples
-If you want to use double quotes in your command, you must escape them with \. Backslashes must by escaped with another backslash \\ or must be converted into /
+If you want to use double quotes in your command, you must escape them with `\`. Backslashes must by escaped with another backslash `\\` or must be converted into `/` 
 
-environment variable, file output, escaped backslashes
+environment variable, file output, escaped backslashes 
 `echo %USERNAME% >> c:\\tmp\\AnyToWindowsService.txt`
 
 escaped double quotes, slashes instead of backslashes 
