@@ -30,6 +30,8 @@ Setting are places in two JSON files: appsettings.json and appsettings.serilog.j
 By default only errors will be logged inside "log" subdirectory.  
 more info: https://serilog.net/
 
+Log file path should be absolute (e.g.: `c:/logs/log-.txt`). If you leave relative path (e.g.: `./log/log-.txt`) it can be logged into Windows system32 directory.
+
 ## Installation
 `AnyToWindowsService install` (in command prompt, runned as administrator)  
 more info: https://topshelf.readthedocs.io/en/latest/overview/commandline.html
