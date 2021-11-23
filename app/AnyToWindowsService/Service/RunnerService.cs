@@ -12,6 +12,7 @@ namespace AnyToWindowsService.Service
     {
         private BackgroundWorker backgroundWorker;
         private AppSettings settings;
+        private bool isExecuting = false;
 
         public RunnerService(AppSettings settings)
         {
@@ -22,23 +23,8 @@ namespace AnyToWindowsService.Service
             };
         }
 
-        private void RunCommand(object? sender, DoWorkEventArgs e)
+        private void DoWork(object? sender, DoWorkEventArgs e)
         {
-            var settings = (e.Argument as AppSettings);
-            if (settings is null) throw new ArgumentException();
-            if (string.IsNullOrEmpty(settings.command)) throw new ArgumentException();
-
-            Log.Debug($"Executing command: cmd.exe /c {settings.command}");
-            var process = Process.Start("cmd.exe", $" /c {settings.command}");
-            process.WaitForExit();
-        }
-
-        public bool Start(HostControl hostControl)
-        {
-            if (settings.runOnlyOnce == true && settings.intervalInSec is null) throw new ArgumentException();
-
-            Log.Information("Starting");
-            backgroundWorker.DoWork += RunCommand;
             DateTime? lastRun = null;
 
             while (true)
@@ -53,10 +39,12 @@ namespace AnyToWindowsService.Service
                 {
                     Log.Debug("Time to execute command.");
                     lastRun = DateTime.Now;
-                    if (!backgroundWorker.IsBusy)
+                    if (!isExecuting)
                     {
+                        isExecuting = true;
                         Log.Debug("Worker not busy.");
-                        backgroundWorker.RunWorkerAsync(settings);
+                        RunCommand(settings);
+                        isExecuting = false;
                     }
                 }
 
@@ -68,6 +56,26 @@ namespace AnyToWindowsService.Service
 
                 Thread.Sleep(1000);
             }
+        }
+
+        private void RunCommand(AppSettings settings)
+        {
+            if (settings is null) throw new ArgumentException();
+            if (string.IsNullOrEmpty(settings.command)) throw new ArgumentException();
+
+            Log.Debug($"Executing command: cmd.exe /s /c \"{settings.command}\"");
+            var process = Process.Start("cmd.exe", $" /s /c \"{settings.command}\"");
+            process.WaitForExit();
+        }
+
+        public bool Start(HostControl hostControl)
+        {
+            if (settings.runOnlyOnce != true && settings.intervalInSec is null) throw new ArgumentException();
+
+            Log.Information("Starting");
+            backgroundWorker.DoWork += DoWork;
+            backgroundWorker.RunWorkerAsync();
+            
             return true;
         }
 
