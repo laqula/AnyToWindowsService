@@ -27,9 +27,9 @@ Setting are places in two JSON files: appsettings.json and appsettings.serilog.j
 | maxWaitForFinishInSec | Time in seconds after which command will be killed. | It will be used for long running commands which can't handle serivce stop command. |
 
 ### Serilog settings
-By default only errors will be logged inside "log" subdirectory.
+By default only errors will be logged inside "log" subdirectory.  
 more info: https://serilog.net/
 
 ## Installation
-`AnyToWindowsService install` (in command prompt, runned as administrator)
+`AnyToWindowsService install` (in command prompt, runned as administrator)  
 more info: https://topshelf.readthedocs.io/en/latest/overview/commandline.html
